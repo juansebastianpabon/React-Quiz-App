@@ -6,6 +6,7 @@ import MainContent from "./MainContent";
 import Loader from "./Loader.jsx";
 import Error from "./Error.jsx";
 import StartScreen from "./StartScreen.jsx";
+import Question from "./Question.jsx";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -14,6 +15,9 @@ function reducer(state, action) {
 
     case "dataFailed":
       return { ...state, status: "error" };
+
+    case "start":
+      return { ...state, status: "active" };
 
     default:
       throw new Error("Unknown action type");
@@ -44,7 +48,13 @@ function App() {
       <MainContent>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
-        {status === "ready" && <StartScreen numQuestions={numQuestions} />}
+        {status === "ready" && (
+          <StartScreen
+            numQuestions={numQuestions}
+            dispatch={dispatch}
+          />
+        )}
+        {status === "active" && <Question />}
       </MainContent>
     </div>
   );
