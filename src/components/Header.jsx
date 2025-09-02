@@ -1,4 +1,4 @@
-import ReactLogo from "./assets/react.svg";
+import ReactLogo from "../assets/react.svg";
 
 function Header() {
   return (
