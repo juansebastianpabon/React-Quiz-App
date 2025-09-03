@@ -10,6 +10,16 @@ import Question from "./Question.jsx";
 import NextButton from "./NextButton.jsx";
 import Progress from "./Progress.jsx";
 import FinishScreen from "./FinishScreen.jsx";
+
+const initialState = {
+  questions: [],
+  //loading, errror, ready, active, finished
+  status: "loading",
+  index: 0,
+  answer: null,
+  points: 0,
+  highscore: 0,
+};
 function reducer(state, action) {
   switch (action.type) {
     case "dataReceived":
@@ -44,22 +54,20 @@ function reducer(state, action) {
           state.points > state.highscore ? state.points : state.highscore,
       };
 
+    case "reset":
+      return {
+        ...initialState,
+        status: "ready",
+        questions: [...action.payload.questions],
+        highscore: action.payload.highscore,
+      };
+
     default:
       throw new Error("Unknown action type");
   }
 }
 
 function App() {
-  const initialState = {
-    questions: [],
-    //loading, errror, ready, active, finished
-    status: "loading",
-    index: 0,
-    answer: null,
-    points: 0,
-    highscore: 0,
-  };
-
   const [{ questions, status, index, answer, points, highscore }, dispatch] =
     useReducer(reducer, initialState);
 
@@ -118,6 +126,8 @@ function App() {
             points={points}
             maxPosiblePoints={maxPosiblePoints}
             highscore={highscore}
+            dispatch={dispatch}
+            questions={questions}
           />
         )}
       </MainContent>
